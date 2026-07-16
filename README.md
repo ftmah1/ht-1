@@ -24,4 +24,6 @@ Some notes on this take home
 - You are free to pick another server technology (e.g. NestJS) if you wish and even pick another language though please check with us first on language.
 
 How to submit
-- Please send an email to jonny@healthtech1.uk and andy@healthtech1.uk with a link to your repository and a link to a 5 minute (max) [loom](https://www.loom.com) which explains your code and some of your design decisions
+- The email sent to you has a unique submission link, which will take you to a submission portal
+- Please submit on the portal: a link to your repository and a link to a 5 minute (max) loom which explains your code and some of your design decisions
+- If possible, please submit within 4-5 days of receiving the task
