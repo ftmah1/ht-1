@@ -1,0 +1,20 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: healthtech1-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres #in prod i would not use it like this :)
+      POSTGRES_DB: healthtech1
+    ports:
+      - "5432:5432"
+    volumes:
+      - healthtech1-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d healthtech1"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  healthtech1-db-data:
