@@ -1,7 +1,7 @@
 // forms/ingest-result.ts
 export type ResponseBody =
-  | { outcome: "invalid_request" } // 400 — their data was wrong: no ref, or schema validation failed
-  | { outcome: "error" } // 500 — our downstream (geocoding, unexpected errors) failed
+  | { outcome: "invalid_request"; errorMsg?: string } // 400 — their data was wrong: no ref, or schema validation failed
+  | { outcome: "error"; errorMsg?: string } // 500 — our downstream (geocoding, unexpected errors) failed
   | { outcome: "success" } // 200 — includes duplicates, already-processed forms
   | { outcome: "not_found" };
 

@@ -15,6 +15,7 @@ import { Selectable } from "kysely";
 import { ResponseBody } from "../../responseBody";
 import { ZodError } from "zod";
 import { notifyTeamAndUpdateEmailSent } from "../../shared/notifyTeamAndUpdateEmailSent";
+import { withRetry } from "../../shared/retry";
 
 export const ingestFormService = async (ingestedForm: unknown): Promise<ResponseBody> => {
   const applicationRef = extractApplicationRef(ingestedForm);
@@ -39,14 +40,14 @@ export const ingestFormService = async (ingestedForm: unknown): Promise<Response
 
     const { data, success, error } = IngestedForm.safeParse(ingestedForm);
     if (!success) {
-      await saveError(error, savedIngestedForm);
-      return { outcome: "invalid_request" };
+      const errorMsg = await saveError(error, savedIngestedForm);
+      return { outcome: "invalid_request", errorMsg };
     }
 
-    const { body } = await lookupPostcode(data.address.postcode);
+    const { body } = await withRetry(() => lookupPostcode(data.address.postcode));
     if (!body) {
       await updateIngestedFormStatus(db, savedIngestedForm.id, "errored", "PostCode api failed");
-      return { outcome: "error" };
+      return { outcome: "error", errorMsg: "PostCode api failed" };
     }
 
     const transformedForm = mapper(data, body.latitude, body.longitude);
@@ -57,7 +58,7 @@ export const ingestFormService = async (ingestedForm: unknown): Promise<Response
     return { outcome: "success" };
   } catch (error) {
     console.error("Failed to ingest form:", error);
-    return { outcome: "error" };
+    return { outcome: "error", errorMsg: "Failed to ingest form" };
   }
 };
 
@@ -67,6 +68,7 @@ async function saveError(error: ZodError, savedIngestedForm: Selectable<Ingested
     "",
   );
   await updateIngestedFormStatus(db, savedIngestedForm.id, "errored", allErrors);
+  return allErrors;
 }
 
 async function saveTransformedFormAndUpdateStatus(

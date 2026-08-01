@@ -12,12 +12,9 @@ app.post("/ingest", async (req: Request, res: Response) => {
   return res.status(statusMap[result.outcome]).json({ outcome: result.outcome });
 });
 
-app.post(
-  "/retry/forms/:applicationRef",
-  async (req: Request<{ applicationRef: string }>, res: Response) => {
-    const result = await retryIngestService(req.params.applicationRef);
-    return res.status(statusMap[result.outcome]).json({ outcome: result.outcome });
-  },
-);
+app.post("/retry/forms/:id", async (req: Request<{ id: string }>, res: Response) => {
+  const result = await retryIngestService(req.params.id);
+  return res.status(statusMap[result.outcome]).json({ outcome: result.outcome });
+});
 
 export default app;

@@ -1,10 +1,7 @@
 import { Insertable, Transaction, Kysely } from "kysely";
 import { DB, FormStatus, IngestedForms } from "../types";
 
-export function insertIngestForm(
-  executor: Kysely<DB> | Transaction<DB>,
-  ingestedForm: Insertable<IngestedForms>,
-) {
+export function insertIngestForm(executor: Kysely<DB>, ingestedForm: Insertable<IngestedForms>) {
   return executor
     .insertInto("ingestedForms")
     .values(ingestedForm)
@@ -28,13 +25,14 @@ export function updateIngestedFormStatus(
     .execute();
 }
 
-export function getIngestedFormByApplicationRef(
-  executor: Kysely<DB> | Transaction<DB>,
-  applicationRef: string,
-) {
+export function getIngestedFormByApplicationRef(executor: Kysely<DB>, applicationRef: string) {
   return executor
     .selectFrom("ingestedForms")
     .selectAll()
     .where("applicationRef", "=", applicationRef)
     .executeTakeFirst();
+}
+
+export function getIngestedFormById(executor: Kysely<DB>, id: string) {
+  return executor.selectFrom("ingestedForms").selectAll().where("id", "=", id).executeTakeFirst();
 }

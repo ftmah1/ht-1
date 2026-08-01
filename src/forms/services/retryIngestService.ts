@@ -1,10 +1,10 @@
 import { db } from "../../db";
-import { getIngestedFormByApplicationRef } from "../../db/queries/ingestedForm";
+import { getIngestedFormById } from "../../db/queries/ingestedForm";
 import { ResponseBody } from "../../responseBody";
 import { ingestFormService } from "./ingestFormService";
 
-export async function retryIngestService(applicationRef: string): Promise<ResponseBody> {
-  const ingestedForm = await getIngestedFormByApplicationRef(db, applicationRef);
+export async function retryIngestService(id: string): Promise<ResponseBody> {
+  const ingestedForm = await getIngestedFormById(db, id);
   if (!ingestedForm) {
     return { outcome: "not_found" };
   }
