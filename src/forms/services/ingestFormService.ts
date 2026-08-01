@@ -47,7 +47,7 @@ export const ingestFormService = async (ingestedForm: unknown): Promise<Response
     const { body } = await withRetry(() => lookupPostcode(data.address.postcode));
     if (!body) {
       await updateIngestedFormStatus(db, savedIngestedForm.id, "errored", "PostCode api failed");
-      return { outcome: "error", errorMsg: "PostCode api failed" };
+      return { outcome: "error" };
     }
 
     const transformedForm = mapper(data, body.latitude, body.longitude);
@@ -58,7 +58,7 @@ export const ingestFormService = async (ingestedForm: unknown): Promise<Response
     return { outcome: "success" };
   } catch (error) {
     console.error("Failed to ingest form:", error);
-    return { outcome: "error", errorMsg: "Failed to ingest form" };
+    return { outcome: "error" };
   }
 };
 
