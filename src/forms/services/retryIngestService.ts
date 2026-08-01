@@ -1,6 +1,6 @@
 import { db } from "../../db";
 import { getIngestedFormById } from "../../db/queries/ingestedForm";
-import { ResponseBody } from "../../responseBody";
+import { ResponseBody } from "../../shared/responseBody";
 import { ingestFormService } from "./ingestFormService";
 
 export async function retryIngestService(id: string): Promise<ResponseBody> {

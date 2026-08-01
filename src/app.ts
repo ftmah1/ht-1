@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import { ingestFormService } from "./forms/services/ingestFormService";
 import { retryIngestService } from "./forms/services/retryIngestService";
-import { statusMap } from "./responseBody";
+import { statusMap } from "./shared/responseBody";
 
 const app = express();
 

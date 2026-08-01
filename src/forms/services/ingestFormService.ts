@@ -12,7 +12,7 @@ import { db } from "../../db";
 import { extractApplicationRef, toJsonValue } from "../utils";
 import { TransformedFormSchema } from "../schemas/transformed_schema";
 import { Selectable } from "kysely";
-import { ResponseBody } from "../../responseBody";
+import { ResponseBody } from "../../shared/responseBody";
 import { ZodError } from "zod";
 import { notifyTeamAndUpdateEmailSent } from "../../shared/notifyTeamAndUpdateEmailSent";
 import { withRetry } from "../../shared/retry";
