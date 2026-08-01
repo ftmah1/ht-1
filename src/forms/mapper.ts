@@ -11,10 +11,13 @@ export function mapper(
   return {
     sessionId: ingestedForm.session_id,
     applicationReference: ingestedForm.application_reference,
-    firstName: names?.[0],
-    lastName: names?.[1],
+    firstName: names[0],
+    lastName: names[names.length - 1] ?? "",
     email: ingestedForm.email,
-    gender: ingestedForm.gender as GenderTransformed,
+    gender:
+      ingestedForm.gender === "other"
+        ? "prefer-not-to-say"
+        : (ingestedForm.gender as GenderTransformed),
     dateOfBirth: new Date(ingestedForm.date_of_birth),
     phoneNumber: ingestedForm.phone_number,
     mobileNumber: ingestedForm.mobile_number,

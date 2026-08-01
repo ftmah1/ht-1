@@ -20,7 +20,6 @@ import { withRetry } from "../../shared/retry";
 export const ingestFormService = async (ingestedForm: unknown): Promise<ResponseBody> => {
   const applicationRef = extractApplicationRef(ingestedForm);
   if (!applicationRef) {
-    console.error("Failed to ingest form: no application_reference found in payload");
     return { outcome: "invalid_request" };
   }
 
@@ -40,8 +39,8 @@ export const ingestFormService = async (ingestedForm: unknown): Promise<Response
 
     const { data, success, error } = IngestedForm.safeParse(ingestedForm);
     if (!success) {
-      const errorMsg = await saveError(error, savedIngestedForm);
-      return { outcome: "invalid_request", errorMsg };
+      await saveError(error, savedIngestedForm);
+      return { outcome: "invalid_request" };
     }
 
     const { body } = await withRetry(() => lookupPostcode(data.address.postcode));

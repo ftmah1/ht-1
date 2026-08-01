@@ -12,12 +12,9 @@ export async function up(db: Kysely<any>): Promise<void> {
     .createTable("ingested_forms")
     .addColumn("id", "uuid", (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`))
     .addColumn("application_ref", "text", (col) => col.notNull().unique())
-    .addColumn("session_id", "text")
     .addColumn("raw_payload", "jsonb", (col) => col.notNull())
     .addColumn("status", sql`form_status`, (col) => col.notNull().defaultTo("received"))
     .addColumn("error_message", "text")
-    .addColumn("latitude", "numeric")
-    .addColumn("longitude", "numeric")
     .addColumn("received_at", "timestamptz", (col) => col.notNull().defaultTo(sql`now()`))
     .addColumn("updated_at", "timestamptz", (col) => col.notNull().defaultTo(sql`now()`))
     .execute();

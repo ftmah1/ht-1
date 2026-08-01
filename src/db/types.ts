@@ -33,11 +33,8 @@ export interface IngestedForms {
   applicationRef: string;
   errorMessage: string | null;
   id: Generated<string>;
-  latitude: Numeric | null;
-  longitude: Numeric | null;
   rawPayload: Json;
   receivedAt: Generated<Timestamp>;
-  sessionId: string | null;
   status: Generated<FormStatus>;
   updatedAt: Generated<Timestamp>;
 }
