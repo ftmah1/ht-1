@@ -2,7 +2,7 @@ import { mapper } from "../src/forms/mapper";
 import { IngestedFormSchema } from "../src/forms/schemas/ingested_schema";
 import baseRequest from "../src/forms/examples/person_one.json";
 
-const baseForm: IngestedFormSchema = baseRequest;
+const baseForm: IngestedFormSchema = baseRequest as IngestedFormSchema;
 
 describe("mapper", () => {
   describe("gender mapping", () => {

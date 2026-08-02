@@ -57,7 +57,11 @@ export const ingestFormService = async (
     }
 
     const transformedForm = mapper(data, body.latitude, body.longitude);
-    await saveTransformedFormAndUpdateStatus(transformedForm, savedIngestedForm);
+    await saveTransformedFormAndUpdateStatus(
+      deps.formRepository,
+      transformedForm,
+      savedIngestedForm,
+    );
 
     await deps.notifyTeam(applicationRef, deps.formRepository);
 
@@ -66,20 +70,21 @@ export const ingestFormService = async (
     console.error("Failed to ingest form:", error);
     return { outcome: "error" };
   }
-
-  async function saveTransformedFormAndUpdateStatus(
-    transformedForm: TransformedFormSchema,
-    savedIngestedForm: Selectable<IngestedForms>,
-  ) {
-    await deps.formRepository.runInTransaction(async (trx) => {
-      await deps.formRepository.insertTransformedForm(trx, {
-        ...transformedForm,
-        ingestedFormId: savedIngestedForm.id,
-      });
-      await deps.formRepository.updateIngestedFormStatus(savedIngestedForm.id, "ready", null, trx);
-    });
-  }
 };
+
+async function saveTransformedFormAndUpdateStatus(
+  formRepository: FormRepository,
+  transformedForm: TransformedFormSchema,
+  savedIngestedForm: Selectable<IngestedForms>,
+) {
+  await formRepository.runInTransaction(async (trx) => {
+    await formRepository.insertTransformedForm(trx, {
+      ...transformedForm,
+      ingestedFormId: savedIngestedForm.id,
+    });
+    await formRepository.updateIngestedFormStatus(savedIngestedForm.id, "ready", null, trx);
+  });
+}
 
 async function saveError(
   formRepository: FormRepository,

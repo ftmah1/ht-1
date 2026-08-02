@@ -1,13 +1,17 @@
-import { initiasedDb } from "./shared/dependencies";
+import { dependencies } from "./dependencies";
+import { FormRepository } from "./forms/formRepository/formRepositoryInterface";
 import { notifyTeamAndUpdateEmailSent } from "./shared/notifyTeamAndUpdateEmailSent";
 
-export async function sweepPendingEmail() {
+export async function sweepPendingEmail(formRepository: FormRepository) {
   try {
-    const forms = await initiasedDb.getAllFormsWithEmailNotSent();
+    const forms = await formRepository.getAllFormsWithEmailNotSent();
     await Promise.allSettled(
-      forms.map((form) => notifyTeamAndUpdateEmailSent(form.applicationReference, initiasedDb)),
+      forms.map((form) => notifyTeamAndUpdateEmailSent(form.applicationReference, formRepository)),
     );
   } catch (error) {
     console.error("Failed to process pending emails:", error);
   }
 }
+
+// Schedule the sweepPendingEmail function to run every 60 seconds
+setInterval(() => sweepPendingEmail(dependencies.formRepository), 60000);
