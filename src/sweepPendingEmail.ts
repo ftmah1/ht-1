@@ -1,4 +1,3 @@
-import { dependencies } from "./dependencies";
 import { FormRepository } from "./forms/formRepository/formRepositoryInterface";
 import { notifyTeamAndUpdateEmailSent } from "./shared/notifyTeamAndUpdateEmailSent";
 
@@ -12,6 +11,3 @@ export async function sweepPendingEmail(formRepository: FormRepository) {
     console.error("Failed to process pending emails:", error);
   }
 }
-
-// Schedule the sweepPendingEmail function to run every 60 seconds
-setInterval(() => sweepPendingEmail(dependencies.formRepository), 60000);
