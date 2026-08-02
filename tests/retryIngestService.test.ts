@@ -1,7 +1,7 @@
 import { retryIngestService } from "../src/forms/services/retryIngestService";
 import { IngestFormDeps } from "../src/forms/services/ingestFormService";
 import baseRequest from "../src/forms/examples/person_one.json";
-import { buildDeps, savedIngestedForm } from "./ingestFormService.test";
+import { buildDeps, savedIngestedForm } from "./fixtures";
 
 describe("retryIngestService", () => {
   it("returns not_found when no matching row exists", async () => {
