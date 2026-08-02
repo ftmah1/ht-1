@@ -34,11 +34,29 @@ describe("mapper", () => {
       expect(result.firstName).toEqual("Andy James");
       expect(result.lastName).toEqual("Smith-Jones");
     });
+  });
 
-    it("splits a single-word name into an empty first name and the whole word as last name", () => {
-      const result = mapper({ ...baseForm, name: "Cher" }, 50, 50);
-      expect(result.firstName).toEqual("");
-      expect(result.lastName).toEqual("Cher");
+  describe("full transform", () => {
+    it("maps every field on a normal input", () => {
+      const result = mapper(baseForm, 50, 50);
+      expect(result).toEqual({
+        sessionId: baseForm.session_id,
+        applicationReference: baseForm.application_reference,
+        firstName: "John",
+        lastName: "Doe",
+        email: baseForm.email,
+        gender: baseForm.gender,
+        dateOfBirth: new Date(baseForm.date_of_birth),
+        phoneNumber: baseForm.phone_number,
+        mobileNumber: baseForm.mobile_number,
+        addressLine1: baseForm.address.address_line_1,
+        addressLine2: baseForm.address.address_line_2,
+        addressLine3: baseForm.address.address_line_3,
+        postcode: baseForm.address.postcode,
+        country: baseForm.address.country,
+        latitude: 50,
+        longitude: 50,
+      });
     });
   });
 });
