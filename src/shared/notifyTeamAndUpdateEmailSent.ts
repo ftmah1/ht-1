@@ -1,9 +1,11 @@
 import { sendEmail } from "../providers/sendgrid";
-import { updateEmailSent } from "../db/queries/transformedForm";
-import { db } from "../db";
 import { withRetry } from "./retry";
+import { FormRepository } from "../forms/formRepository/formRepositoryInterface";
 
-export async function notifyTeamAndUpdateEmailSent(applicationRef: string) {
+export async function notifyTeamAndUpdateEmailSent(
+  applicationRef: string,
+  formRepository: FormRepository,
+) {
   const { statusCode } = await withRetry(() =>
     sendEmail({
       to: "happyforms@bots.com",
@@ -13,6 +15,6 @@ export async function notifyTeamAndUpdateEmailSent(applicationRef: string) {
     }),
   );
   if (statusCode === 200) {
-    await updateEmailSent(db, applicationRef);
+    await formRepository.updateEmailSent(applicationRef);
   }
 }

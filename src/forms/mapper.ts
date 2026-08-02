@@ -7,12 +7,14 @@ export function mapper(
   latitude: number,
   longitude: number,
 ): TransformedFormSchema {
-  const names = ingestedForm.name.split(" ");
+  const name = ingestedForm.name.split(/\s+/);
+  const firstName = name.slice(0, -1).join(" ");
+  const lastName = name[name.length - 1];
   return {
     sessionId: ingestedForm.session_id,
     applicationReference: ingestedForm.application_reference,
-    firstName: names[0],
-    lastName: names[names.length - 1] ?? "",
+    firstName,
+    lastName,
     email: ingestedForm.email,
     gender:
       ingestedForm.gender === "other"
