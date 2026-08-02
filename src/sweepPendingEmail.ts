@@ -3,6 +3,7 @@ import { notifyTeamAndUpdateEmailSent } from "./shared/notifyTeamAndUpdateEmailS
 
 export async function sweepPendingEmail(formRepository: FormRepository) {
   try {
+    console.log('sweeping email for all forms with email not sent');
     const forms = await formRepository.getAllFormsWithEmailNotSent();
     await Promise.allSettled(
       forms.map((form) => notifyTeamAndUpdateEmailSent(form.applicationReference, formRepository)),
